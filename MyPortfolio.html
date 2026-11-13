@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aradhya Tiwari | My Form</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg,
+        #ffd6e7, #e6d6ff, #d6eaff);
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 440px;
+    padding: 35px;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(15px);
+    border: 1px solid white;
+    border-radius: 25px;
+    box-shadow: 0 15px 45px #9c76a533;
+    animation: appear 1s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    text-align: center;
+    color: #9b5b91;
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #806b87;
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 7px;
+    color: #76517d;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #e5c9ed;
+    border-radius: 12px;
+    outline: none;
+    background: #fffaff;
+    color: #674a70;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #c17bc9;
+    box-shadow: 0 0 10px #dcb3e8;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 23px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg,
+        #d58acb, #9d8ce8);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px #a77acb66;
+}
+
+#message {
+    text-align: center;
+    color: #8d5595;
+    margin-top: 17px;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 22px;
+    color: #927d9c;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>♡ Hello, Beautiful! ♡</h1>
+    <p class="subtitle">Welcome to Aradhya's Little Space ✨</p>
+
+    <form id="myForm">
+
+        <label>Your Full Name</label>
+        <input type="text" id="name"
+        placeholder="Enter your name" required>
+
+        <label>Email Address</label>
+        <input type="email" id="email"
+        placeholder="Enter your email" required>
+
+        <label>Your Age</label>
+        <input type="number" id="age"
+        placeholder="Enter your age" min="1" required>
+
+        <label>Choose Your Favourite Colour</label>
+        <select id="color" required>
+            <option value="">Select a colour</option>
+            <option>Pink 🌸</option>
+            <option>Lavender 💜</option>
+            <option>Baby Blue 🦋</option>
+            <option>White 🤍</option>
+            <option>Black 🖤</option>
+        </select>
+
+        <label>Tell Me Something About Yourself</label>
+        <textarea id="about"
+        placeholder="Write something lovely..."></textarea>
+
+        <button type="submit">Submit ✨</button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <div class="footer">
+        Made with ♡ by Aradhya Tiwari
+    </div>
+
+</div>
+
+<script>
+const form = document.getElementById("myForm");
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+
+    document.getElementById("message").innerHTML =
+        "Thank you, " + name +
+        "! Your form has been submitted successfully 💗";
+
+    form.reset();
+});
+</script>
+
+</body>
+</html>
