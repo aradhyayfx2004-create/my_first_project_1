@@ -1,0 +1,145 @@
+
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+HTML = """
+<!DOCTYPE html>
+<html>
+<head>
+<title>Aradhya - The Princess</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #100713;
+    color: white;
+    font-family: Georgia, serif;
+    text-align: center;
+}
+
+header {
+    padding: 25px;
+    color: pink;
+    letter-spacing: 4px;
+}
+
+.hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #70265c, #100713 70%);
+    padding: 25px;
+}
+
+.crown {
+    font-size: 90px;
+}
+
+h1 {
+    font-size: clamp(40px, 8vw, 75px);
+    color: #ff91cb;
+    margin: 15px;
+    text-shadow: 0 0 25px pink;
+}
+
+p {
+    font-size: 18px;
+    color: #f5d8e9;
+    line-height: 1.8;
+    max-width: 600px;
+}
+
+button {
+    margin-top: 30px;
+    padding: 15px 35px;
+    border: none;
+    border-radius: 30px;
+    background: pink;
+    color: #270b20;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: white;
+    transform: scale(1.05);
+}
+
+section {
+    padding: 65px 20px;
+}
+
+h2 {
+    color: pink;
+    margin-bottom: 25px;
+}
+
+footer {
+    padding: 25px;
+    color: pink;
+}
+</style>
+</head>
+
+<body>
+
+<header>👑 THE ROYAL KINGDOM 👑</header>
+
+<div class="hero">
+    <div class="crown">👸🏻</div>
+    <h1>ARADHYA</h1>
+    <h2>The Princess</h2>
+
+    <p>
+    Welcome to the magical kingdom of Aradhya.
+    A princess with beautiful dreams, a brave heart
+    and unlimited magic!
+    </p>
+
+    <button onclick="showMagic()">
+        ✨ Discover My Story
+    </button>
+</div>
+
+<section>
+    <h2>🌸 Her Magical Story 🌸</h2>
+    <p>
+    Once upon a time, there lived a beautiful princess
+    named Aradhya. She believed in magic, friendship,
+    kindness and following her dreams.
+    </p>
+</section>
+
+<footer>
+    Made with ❤️ for Princess Aradhya
+</footer>
+
+<script>
+function showMagic() {
+    alert("Welcome to Aradhya's magical kingdom! 👑✨");
+}
+</script>
+
+</body>
+</html>
+"""
+
+@app.route("/")
+def home():
+    return render_template_string(HTML)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+"""
+
+
+  
