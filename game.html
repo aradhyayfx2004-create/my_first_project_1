@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aradhya's Object Hunt Game 🎮</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#ffd6ec,#e3d5ff,#c9eaff);
+    min-height: 100vh;
+    padding: 20px;
+    color: #814a91;
+}
+
+.container {
+    max-width: 1050px;
+    margin: auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: clamp(25px,5vw,38px);
+    color: #ad5d9e;
+    margin: 15px 0 5px;
+}
+
+.subtitle {
+    color: #9a70a9;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: white;
+    padding: 12px 22px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px #b783c533;
+    font-weight: bold;
+}
+
+.target-box {
+    background: linear-gradient(120deg,#f6a9d5,#b99aff);
+    color: white;
+    padding: 25px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px #b77dcc55;
+}
+
+.target-box p {
+    font-size: 15px;
+}
+
+.target {
+    font-size: 40px;
+    font-weight: 800;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+#feedback {
+    min-height: 48px;
+    font-size: 23px;
+    font-weight: 800;
+    margin: 15px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 12px;
+}
+
+.object {
+    background: rgba(255,255,255,.85);
+    border: 3px solid transparent;
+    border-radius: 18px;
+    min-height: 115px;
+    padding: 12px 5px;
+    cursor: pointer;
+    transition: .2s;
+    box-shadow: 0 5px 15px #a47ab533;
+}
+
+.object:hover {
+    transform: translateY(-5px) scale(1.04);
+    border-color: #e89bcf;
+}
+
+.object:active {
+    transform: scale(.92);
+}
+
+.emoji {
+    font-size: 42px;
+    display: block;
+}
+
+.object span:last-child {
+    font-size: 12px;
+    font-weight: 600;
+    display: block;
+    margin-top: 5px;
+    color: #98649f;
+}
+
+.correct {
+    border-color: #4fc98b !important;
+    background: #dcffeb;
+}
+
+.wrong {
+    border-color: #ff7474 !important;
+    background: #ffe1e1;
+}
+
+.controls {
+    margin: 25px 0;
+}
+
+button {
+    background: linear-gradient(45deg,#ed83c0,#a982e9);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+    box-shadow: 0 5px 15px #b77dcc55;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+#final {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    margin: 20px auto;
+    max-width: 450px;
+}
+
+@media(max-width:600px) {
+    .grid {
+        grid-template-columns: repeat(3,1fr);
+        gap: 8px;
+    }
+
+    .object {
+        min-height: 100px;
+    }
+
+    .emoji {
+        font-size: 35px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌸 Aradhya's Object Hunt 🌸</h1>
+
+    <p class="subtitle">
+        Find the correct object and win! 💗
+    </p>
+
+    <div class="stats">
+
+        <div class="stat">
+            🏆 Score: <span id="score">0</span>
+        </div>
+
+        <div class="stat">
+            🎯 Level: <span id="level">1</span>/100
+        </div>
+
+        <div class="stat">
+            ❌ Mistakes: <span id="mistakes">0</span>
+        </div>
+
+    </div>
+
+    <div class="target-box">
+
+        <p>✨ FIND THIS OBJECT ✨</p>
+
+        <div class="target" id="target">
+            CAKE
+        </div>
+
+    </div>
+
+    <div id="feedback">
+        Let's Play! 💕
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="controls">
+
+        <button onclick="nextLevel()" id="nextBtn" class="hidden">
+            Next Level ➜
+        </button>
+
+        <button onclick="restartGame()">
+            🔄 Restart Game
+        </button>
+
+    </div>
+
+    <div id="final" class="hidden">
+
+        <h2>🎉 YOU COMPLETED THE GAME! 🎉</h2>
+
+        <p style="margin:15px">
+            Amazing work, Aradhya! 💗
+        </p>
+
+        <h2>
+            Your Score:
+            <span id="finalScore">0</span>/100
+        </h2>
+
+        <button onclick="restartGame()">
+            Play Again 🌸
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+// 100 DIFFERENT OBJECTS
+
+const objects = [
+
+["Cake","🍰"],["Apple","🍎"],["Ball","⚽"],["Cat","🐱"],
+["Dog","🐶"],["Car","🚗"],["Book","📚"],["Flower","🌸"],
+["Pizza","🍕"],["Ice Cream","🍦"],
+
+["Banana","🍌"],["Guitar","🎸"],["Camera","📷"],
+["Watch","⌚"],["Phone","📱"],["Laptop","💻"],
+["Pencil","✏️"],["Pen","🖊️"],["Bag","🎒"],
+["Shoes","👟"],
+
+["Sun","☀️"],["Moon","🌙"],["Star","⭐"],
+["Cloud","☁️"],["Rainbow","🌈"],["Tree","🌳"],
+["Leaf","🍃"],["Butterfly","🦋"],["Bee","🐝"],
+["Bird","🐦"],
+
+["Fish","🐟"],["Rabbit","🐰"],["Lion","🦁"],
+["Tiger","🐯"],["Monkey","🐵"],["Elephant","🐘"],
+["Panda","🐼"],["Frog","🐸"],["Turtle","🐢"],
+["Dolphin","🐬"],
+
+["Cup","☕"],["Bottle","🍼"],["Chair","🪑"],
+["Table","🪵"],["Clock","🕒"],["Lamp","💡"],
+["Key","🔑"],["Lock","🔒"],["Umbrella","☂️"],
+["Mirror","🪞"],
+
+["Pizza Box","📦"],["Burger","🍔"],["Sandwich","🥪"],
+["Donut","🍩"],["Cookie","🍪"],["Chocolate","🍫"],
+["Popcorn","🍿"],["Watermelon","🍉"],["Orange","🍊"],
+["Grapes","🍇"],
+
+["Carrot","🥕"],["Potato","🥔"],["Corn","🌽"],
+["Tomato","🍅"],["Strawberry","🍓"],["Cherry","🍒"],
+["Pineapple","🍍"],["Mango","🥭"],["Coconut","🥥"],
+["Peach","🍑"],
+
+["Crown","👑"],["Ring","💍"],["Diamond","💎"],
+["Heart","❤️"],["Gift","🎁"],["Balloon","🎈"],
+["Rocket","🚀"],["Airplane","✈️"],["Train","🚂"],
+["Bicycle","🚲"],
+
+["House","🏠"],["Castle","🏰"],["School","🏫"],
+["Hospital","🏥"],["Football","🏈"],["Basketball","🏀"],
+["Teddy Bear","🧸"],["Doll","🪆"],["Robot","🤖"],
+["Ghost","👻"],
+
+["Piano","🎹"],["Drum","🥁"],["Microphone","🎤"],
+["Paintbrush","🖌️"],["Scissors","✂️"],["Glasses","👓"],
+["Hat","🎩"],["Watchman","👮"],["Camera Flash","📸"],
+["Trophy","🏆"]
+
+];
+
+// GAME VARIABLES
+
+let currentLevel = 0;
+let score = 0;
+let mistakes = 0;
+let currentObjects = [];
+let completed = false;
+let wrongLocked = false;
+
+// SHUFFLE FUNCTION
+
+function shuffle(array) {
+
+    return [...array].sort(() => Math.random() - 0.5);
+
+}
+
+// START GAME
+
+function startLevel() {
+
+    completed = false;
+    wrongLocked = false;
+
+    document.getElementById("level").innerText =
+        currentLevel + 1;
+
+    document.getElementById("score").innerText =
+        score;
+
+    document.getElementById("mistakes").innerText =
+        mistakes;
+
+    document.getElementById("target").innerText =
+        objects[currentLevel][0];
+
+    document.getElementById("feedback").innerText =
+        "Find the correct object! 🔍";
+
+    document.getElementById("feedback").style.color =
+        "#a65c9b";
+
+    document.getElementById("nextBtn").classList.add("hidden");
+
+    document.getElementById("final").classList.add("hidden");
+
+    // Select 12 random objects including correct answer
+
+    let correctObject = objects[currentLevel];
+
+    let otherObjects = objects.filter(
+        item => item !== correctObject
+    );
+
+    currentObjects = shuffle(otherObjects).slice(0,11);
+
+    currentObjects.push(correctObject);
+
+    currentObjects = shuffle(currentObjects);
+
+    showObjects();
+
+}
+
+// DISPLAY OBJECTS
+
+function showObjects() {
+
+    const grid = document.getElementById("grid");
+
+    grid.innerHTML = "";
+
+    currentObjects.forEach((item) => {
+
+        const card = document.createElement("div");
+
+        card.className = "object";
+
+        card.innerHTML = `
+            <span class="emoji">${item[1]}</span>
+            <span>${item[0]}</span>
+        `;
+
+        card.onclick = () => checkAnswer(item,card);
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+// CHECK ANSWER
+
+function checkAnswer(item,card) {
+
+    if(completed || wrongLocked) return;
+
+    const correctObject = objects[currentLevel];
+
+    if(item === correctObject) {
+
+        // CORRECT ANSWER
+
+        completed = true;
+
+        score++;
+
+        card.classList.add("correct");
+
+        document.getElementById("score").innerText =
+            score;
+
+        document.getElementById("feedback").innerText =
+            "🥳 GOOD! YOU DID IT! 💗";
+
+        document.getElementById("feedback").style.color =
+            "#22aa70";
+
+        document.getElementById("nextBtn").classList.remove("hidden");
+
+    }
+
+    else {
+
+        // WRONG ANSWER
+
+        mistakes++;
+
+        wrongLocked = true;
+
+        card.classList.add("wrong");
+
+        document.getElementById("mistakes").innerText =
+            mistakes;
+
+        document.getElementById("feedback").innerText =
+            "😭 AWW! YOU FAILED! TRY AGAIN! 💔";
+
+        document.getElementById("feedback").style.color =
+            "#ed6b80";
+
+        // Allow retry after a short delay
+
+        setTimeout(() => {
+
+            card.classList.remove("wrong");
+
+            wrongLocked = false;
+
+        },700);
+
+    }
+
+}
+
+// NEXT LEVEL
+
+function nextLevel() {
+
+    if(currentLevel < 99) {
+
+        currentLevel++;
+
+        startLevel();
+
+    }
+
+    else {
+
+        finishGame();
+
+    }
+
+}
+
+// FINISH GAME
+
+function finishGame() {
+
+    document.getElementById("grid").innerHTML = "";
+
+    document.getElementById("target").innerText =
+        "YOU DID IT! 🏆";
+
+    document.getElementById("feedback").innerText =
+        "You are a superstar! 🌟";
+
+    document.getElementById("nextBtn").classList.add("hidden");
+
+    document.getElementById("final").classList.remove("hidden");
+
+    document.getElementById("finalScore").innerText =
+        score;
+
+}
+
+// RESTART GAME
+
+function restartGame() {
+
+    currentLevel = 0;
+
+    score = 0;
+
+    mistakes = 0;
+
+    startLevel();
+
+}
+
+// BEGIN!
+
+startLevel();
+
+</script>
+
+</body>
+</html>
