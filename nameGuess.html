@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aradhya's Name Magic ✨</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Trebuchet MS', sans-serif;
+    background: linear-gradient(135deg,
+        #fbc2eb, #d9c5ff, #c2e9fb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.cloud {
+    position: absolute;
+    font-size: 90px;
+    opacity: 0.6;
+    animation: float 5s infinite alternate;
+}
+
+.c1 { top: 8%; left: 8%; }
+.c2 { bottom: 8%; right: 8%; }
+.c3 { top: 65%; left: 5%; }
+
+@keyframes float {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-25px); }
+}
+
+.container {
+    width: 100%;
+    max-width: 450px;
+    padding: 35px 25px;
+    text-align: center;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(15px);
+    border: 2px solid white;
+    border-radius: 30px;
+    box-shadow: 0 15px 45px #a77ac455;
+    z-index: 2;
+}
+
+h1 {
+    color: #a34b91;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #89628f;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e8b5e7;
+    border-radius: 15px;
+    outline: none;
+    font-size: 17px;
+    text-align: center;
+    background: #fffaff;
+    color: #984c91;
+}
+
+input:focus {
+    border-color: #bd7bd2;
+}
+
+button {
+    margin-top: 18px;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(45deg,#ed8bc5,#a98bea);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 20px #c17cc9;
+}
+
+#result {
+    display: none;
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 20px;
+    background: #fff5fc;
+    animation: appear 0.5s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+#letter {
+    font-size: 55px;
+    color: #c56cba;
+    font-weight: bold;
+}
+
+#quality {
+    color: #985b9b;
+    font-size: 20px;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+#message {
+    color: #b77da9;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.footer {
+    margin-top: 25px;
+    color: #a36c9d;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="cloud c1">☁️</div>
+<div class="cloud c2">☁️</div>
+<div class="cloud c3">☁️</div>
+
+<div class="container">
+
+    <h1>✨ Name Magic ✨</h1>
+
+    <p class="subtitle">
+        Discover the secret personality of your name! 💗
+    </p>
+
+    <input
+        type="text"
+        id="nameInput"
+        placeholder="Enter your beautiful name..."
+        maxlength="30"
+    >
+
+    <button onclick="showMagic()">
+        Reveal My Magic ✨
+    </button>
+
+    <div id="result">
+        <div id="letter"></div>
+        <h2 id="quality"></h2>
+        <p id="message"></p>
+    </div>
+
+    <p class="footer">
+        Made with 💗 by Aradhya
+    </p>
+
+</div>
+
+<script>
+
+// Every letter has two special qualities
+
+const qualities = {
+ A: ["Always adorable 🥰", "A born leader 👑"],
+ B: ["Beautiful heart 💗", "Best in friendship 🌸"],
+ C: ["Creative mind 🎨", "Cute and caring 🧸"],
+ D: ["Dreamer and achiever ✨", "Dancing queen 💃"],
+ E: ["Excellent in studies 📚", "Everyone's favourite 💕"],
+ F: ["Full of fun 😂", "Fearless personality 🦋"],
+ G: ["Genius mind 🧠", "Good at everything 🌟"],
+ H: ["Helpful soul 💖", "Happy vibes only 🌈"],
+ I: ["Intelligent girl 📖", "Innocent and sweet 🧁"],
+ J: ["Joyful personality 🌷", "Jolly and funny 😂"],
+ K: ["Kind hearted 💗", "Knowledge lover 📚"],
+ L: ["Laughing machine 😂", "Loyal friend 🫶"],
+ M: ["Master of creativity 🎨", "Magical personality ✨"],
+ N: ["Naturally talented 🌸", "Never gives up 💪"],
+ O: ["Outstanding personality 👑", "Optimistic soul 🌞"],
+ P: ["Perfectly unique 💜", "Pure heart 🦋"],
+ Q: ["Queen energy 👑", "Quick learner 📚"],
+ R: ["Really good in studies 📚", "Laughing machine 😂"],
+ S: ["Smart and stylish 💅", "Sweetest person 🧁"],
+ T: ["Talented superstar ⭐", "Trustworthy friend 💗"],
+ U: ["Unique personality 🦄", "Understanding soul 🌷"],
+ V: ["Very intelligent 🧠", "Vibrant personality 🌈"],
+ W: ["Wonderful human 💕", "Winner attitude 🏆"],
+ X: ["Xtraordinary mind ✨", "Xtra cute personality 🥰"],
+ Y: ["Young and energetic ⚡", "Your own sunshine ☀️"],
+ Z: ["Zesty personality 🌈", "Zero attitude, full kindness 💗"]
+};
+
+// Store how many times each name is entered
+
+let attempts = {};
+
+function showMagic() {
+
+    let input = document.getElementById("nameInput");
+    let name = input.value.trim();
+
+    if (name === "") {
+        alert("Please enter your name first! 💗");
+        return;
+    }
+
+    // Get first letter
+    let firstLetter = name[0].toUpperCase();
+
+    // Check if letter exists
+    if (!qualities[firstLetter]) {
+        alert("Please enter a name starting with A to Z!");
+        return;
+    }
+
+    // Count attempts for each name
+    let key = name.toLowerCase();
+
+    if (!attempts[key]) {
+        attempts[key] = 0;
+    }
+
+    let index = attempts[key] % 2;
+
+    // Get personality
+    let personality = qualities[firstLetter][index];
+
+    attempts[key]++;
+
+    // Display result
+    document.getElementById("letter").innerText =
+        firstLetter + " 💫";
+
+    document.getElementById("quality").innerText =
+        personality;
+
+    document.getElementById("message").innerText =
+        "Hey " + name + "! This is your special magic! 💗";
+
+    document.getElementById("result").style.display =
+        "block";
+}
+
+// Enter key also works
+document.getElementById("nameInput")
+.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        showMagic();
+    }
+});
+
+</script>
+
+</body>
+</html>
